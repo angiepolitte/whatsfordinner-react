@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
-import { Card, CardContent, Typography, Container, Button } from '@mui/material';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { Card, CardContent, Typography, Container, Button, Box } from '@mui/material';
 import { getRandomColor } from './Colors';
 
 function RandomRestaurant() {
   const location = useLocation();
+  const navigate = useNavigate();
   const restaurants = location.state?.restaurants || [];
   const [randomRestaurant, setRandomRestaurant] = useState(null);
 
@@ -21,6 +22,10 @@ function RandomRestaurant() {
 
   const handleChooseAgain = () => {
     selectRandom();
+  };
+
+  const handleStartOver = () => {
+    navigate('/'); // Navigate back to the first page (RestaurantSearch)
   };
 
   if (!randomRestaurant) {
@@ -44,13 +49,22 @@ function RandomRestaurant() {
           )}
         </CardContent>
       </Card>
-      <Button
-        variant="contained"
-        onClick={handleChooseAgain}
-        style={{ marginTop: '20px', backgroundColor: getRandomColor() }}
-      >
-        Choose Again
-      </Button>
+      <Box display="flex" justifyContent="center" marginTop="20px">
+        <Button
+          variant="contained"
+          onClick={handleChooseAgain}
+          style={{ marginRight: '10px', backgroundColor: getRandomColor() }}
+        >
+          Choose Again
+        </Button>
+        <Button
+          variant="contained"
+          onClick={handleStartOver}
+          style={{ backgroundColor: getRandomColor() }}
+        >
+          Start Over
+        </Button>
+      </Box>
     </Container>
   );
 }
