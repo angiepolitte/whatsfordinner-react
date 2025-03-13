@@ -29,6 +29,7 @@ function RestaurantResults() {
         Restaurant Results:
       </Typography>
       <Button
+        color ="#808000"
         variant="contained"
         onClick={handleRandomRestaurant}
         style={{ margin: '10px', backgroundColor: getRandomColor() }}

@@ -1,16 +1,24 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { TextField, Button, Typography, Container, Box } from '@mui/material';
+import { Alert } from '@mui/material'; // Import Alert
 
 function RestaurantSearch() {
   const [zipCode, setZipCode] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
+  const [showAlert, setShowAlert] = useState(false); // Add state for alert
 
   const handleSearch = async () => {
+    if (!zipCode.trim()) {
+      setShowAlert(true); // Show alert if zipCode is empty
+      return; // Stop the search
+    }
+
     setLoading(true);
     setError(null);
+    setShowAlert(false); // Hide alert if zipCode is valid
 
     try {
       const url = `http://localhost:8080/api/restaurants?query=${encodeURIComponent(zipCode)}`;
@@ -51,6 +59,13 @@ function RestaurantSearch() {
         <Typography variant="h4" gutterBottom style={{ color: '#e9ebf8' }}>
           What's For Dinner?!
         </Typography>
+
+        {showAlert && (
+          <Alert severity="warning" style={{ marginBottom: '10px' }}>
+            Please enter a city or zip code.
+          </Alert>
+        )}
+
         <input
           type="text"
           placeholder="Enter Zip Code"
@@ -62,20 +77,22 @@ function RestaurantSearch() {
             margin: '8px 0',
             border: 'none',
             borderRadius: '4px',
-            backgroundColor: "#FFFFFF",
+            backgroundColor: '#FFFFFF',
             color: '#8d818c',
             width: '100%',
             boxSizing: 'border-box',
           }}
         />
+
         <Button
           variant="contained"
           onClick={handleSearch}
           disabled={loading}
-          style={{ marginTop: '20px', backgroundColor: '#e9ebf8', color: 'black' }} // Blue button
+          style={{ marginTop: '20px', backgroundColor: '#e9ebf8', color: 'black' }}
         >
           {loading ? 'Searching...' : 'Search Restaurants'}
         </Button>
+
         {error && (
           <Typography variant="body2" color="error" style={{ marginTop: '10px' }}>
             Error: {error}

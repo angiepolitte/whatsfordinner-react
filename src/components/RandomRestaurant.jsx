@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Card, CardContent, Typography, Container, Button, Box } from '@mui/material';
-import { getRandomColor } from './Colors';
+import { getRandomColor } from './colors';
 
 function RandomRestaurant() {
   const location = useLocation();
@@ -51,6 +51,7 @@ function RandomRestaurant() {
       </Card>
       <Box display="flex" justifyContent="center" marginTop="20px">
         <Button
+          color ="#808000"
           variant="contained"
           onClick={handleChooseAgain}
           style={{ marginRight: '10px', backgroundColor: getRandomColor() }}
@@ -58,6 +59,7 @@ function RandomRestaurant() {
           Choose Again
         </Button>
         <Button
+          color ="#808000"
           variant="contained"
           onClick={handleStartOver}
           style={{ backgroundColor: getRandomColor() }}
