@@ -1,29 +1,65 @@
-import { useState } from 'react'
-import './App.css'
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'; 
-import RestaurantSearch from './components/RestaurantSearch'
-import RestaurantResults from "./components/RestaurantResults";
-import RandomRestaurant from './components/RandomRestaurant'
+import React, { useState } from 'react';
+import './App.css';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import RestaurantSearch from './components/RestaurantSearch';
+import RestaurantResults from './components/RestaurantResults';
+import RandomRestaurant from './components/RandomRestaurant';
+import RegistrationPage from './components/RegistrationPage';
+import SuccessPage from './components/SuccessPage';
+import LoginPage from './components/LoginPage';
+import StarterPage from './components/StarterPage';
+import NavBar from './components/NavBar';
 
 function App() {
-  const [count, setCount] = useState(0)
-  return (
-  <>
-  <Router>
-  <Routes>
-    {/* <Route path="/" element={<NurserySearch />} />
-    <Route path="/results" element={<Results />} /> */}
-    <Route path="/" element={<RestaurantSearch />} />
-    <Route path="/restaurant-results" element={<RestaurantResults />} />
-    <Route path="/random-restaurant" element={<RandomRestaurant />} />
-  </Routes>
-</Router>
- 
-</>
-  )
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+    const handleLogin = () => {
+        setIsLoggedIn(true);
+    };
+
+    const handleLogout = () => {
+        setIsLoggedIn(false);
+    };
+
+    return (
+        <Router>
+            <NavBar isLoggedIn={isLoggedIn} onLogout={handleLogout} />
+            <Routes>
+                <Route path="/" element={<StarterPage />} />
+                <Route path="/login" element={<LoginPage onLogin={handleLogin} />} />
+                <Route path="/registration" element={<RegistrationPage onLogin={handleLogin}/>} />
+                <Route path="/success" element={<SuccessPage />} />
+                <Route path="/restaurant-search" element={<RestaurantSearch />} />
+                <Route path="/restaurant-results" element={<RestaurantResults />} />
+                <Route path="/random-restaurant" element={<RandomRestaurant />} />
+            </Routes>
+        </Router>
+    );
 }
 
-export default App
+export default App;
+
+// function App() {
+//   const [count, setCount] = useState(0)
+//   return (
+//   <>
+//   <Router>
+//   <Routes>
+//     {/* <Route path="/" element={<NurserySearch />} />
+//     <Route path="/results" element={<Results />} /> */}
+//     {/* <Route path="/" element={<RestaurantSearch />} /> */}
+//     <Route path="/" element={<RegistrationPage />} />
+//     <Route path="/success" element={<SuccessPage />} />
+//     {/* <Route path="/login" element={<LoginPage />} /> */}
+//     <Route path="/restaurant-search" element={<RestaurantSearch />} />
+//     <Route path="/restaurant-results" element={<RestaurantResults />} />
+//     <Route path="/random-restaurant" element={<RandomRestaurant />} />
+//   </Routes>
+// </Router>
+ 
+// </>
+//   )
+// }
 
 // import React from 'react';
 // import { useState } from 'react'
