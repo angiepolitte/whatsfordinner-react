@@ -25,7 +25,7 @@ function RandomRestaurant() {
   };
 
   const handleStartOver = () => {
-    navigate('/'); // Navigate back to the first page (RestaurantSearch)
+    navigate('/restaurant-search'); // Navigate back to the first page (RestaurantSearch)
   };
 
   if (!randomRestaurant) {
