@@ -12,8 +12,8 @@ function NavBar({ isLoggedIn, onLogout }) {
             });
     
             if (response.ok) {
-                onLogout();
-                navigate('/login'); // Redirect to /login
+                onLogout(); // Call the onLogout function passed from the parent
+                navigate('/login'); // Redirect to /login after logout
             } else {
                 console.error('Logout failed:', response.status, response.statusText);
             }
@@ -23,13 +23,13 @@ function NavBar({ isLoggedIn, onLogout }) {
     };
 
     return (
-        <AppBar position="static" sx={{ backgroundColor: '#463f3a' }}> 
-            <Toolbar sx={{ minHeight: '40px' }}> {/* Reduced height */}
-                <Typography variant="h6" style={{ flexGrow: 1 }}>
-                    What's For Dinner?
+        <AppBar position="fixed" sx={{ backgroundColor: '#463f3a' }}>
+            <Toolbar sx={{ minHeight: '40px', display: 'contents', justifyContent: 'space-between', alignItems: 'center' }}>
+                <Typography variant="h6">
+                    Can't Decide on What's For Dinner?
                 </Typography>
                 {isLoggedIn && (
-                    <Box>
+                    <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
                         <Button color="inherit" onClick={handleLogout}>
                             Logout
                         </Button>
