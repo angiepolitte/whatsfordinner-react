@@ -46,19 +46,23 @@ function RegistrationPage({ onLogin }) {
                     'Content-Type': 'application/x-www-form-urlencoded',
                 },
                 credentials: 'include',
-                body: formData.toString(),
+                body: new URLSearchParams({
+                    username: username,
+                    password: password,
+                    confirmPassword: verifyPassword
+                })
             });
 
             if (response.ok) {
-                onLogin(); // Call onLogin after successful registration
-                setSuccess('Registration successful');
-                navigate('/restaurant-search');
+                setSuccess('Registration successful!');
+                onLogin(); // Trigger login state change
+                navigate('/success');
             } else {
                 const errorMessage = await response.text();
-                setError(errorMessage || 'Registration failed');
+                setError(errorMessage);
             }
         } catch (err) {
-            setError(err.message || 'An unexpected error occurred');
+            setError('An error occurred. Please try again.');
         }
     };
 
