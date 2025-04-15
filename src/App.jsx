@@ -10,6 +10,8 @@ import LoginPage from './components/LoginPage';
 import StarterPage from './components/StarterPage';
 import NavBar from './components/NavBar';
 import WelcomePage from './components/WelcomePage';
+import Favorites from './components/Favorites';
+import CreateFavoriteList from './components/CreateFavoritesList';
 
 function App() {
 
@@ -50,6 +52,7 @@ function App() {
                 <Route path="/restaurant-search" element={<RestaurantSearch />} />
                 <Route path="/restaurant-results" element={<RestaurantResults />} />
                 <Route path="/random-restaurant" element={<RandomRestaurant />} />
+                <Route path="/favorites" element={<Favorites />} />
             </Routes>
             </div>
         </Router>
