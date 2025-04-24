@@ -1,30 +1,43 @@
-import React, { useState, useEffect } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { Card, CardContent, Typography, Grid, Button, IconButton, MenuItem, Select, FormControl, InputLabel } from '@mui/material';
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import { getRandomColor } from './colors';
+import React, { useState, useEffect } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import {
+  Card,
+  CardContent,
+  Typography,
+  Grid,
+  Button,
+  IconButton,
+  MenuItem,
+  Select,
+  FormControl,
+  InputLabel,
+} from "@mui/material";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import { getRandomColor } from "./colors";
 
 function RestaurantResults() {
   const location = useLocation();
   const restaurants = location.state?.restaurants || [];
   const navigate = useNavigate();
   const [favoriteLists, setFavoriteLists] = useState([]);
-  const [selectedList, setSelectedList] = useState('');
+  const [selectedList, setSelectedList] = useState("");
   const [selectedRestaurants, setSelectedRestaurants] = useState(new Set());
 
   useEffect(() => {
-    fetch('http://localhost:8080/api/favorite-lists')
+    fetch("http://localhost:8080/api/favorite-lists/all-lists", {
+      credentials: "include",
+    })
       .then((response) => response.json())
       .then((data) => setFavoriteLists(data))
-      .catch((error) => console.error('Error fetching favorite lists:', error));
+      .catch((error) => console.error("Error fetching favorite lists:", error));
   }, []);
 
   const handleRandomRestaurant = () => {
     if (restaurants.length > 0) {
       const randomIndex = Math.floor(Math.random() * restaurants.length);
       const randomRestaurant = restaurants[randomIndex];
-      navigate('/random-restaurant', {
+      navigate("/random-restaurant", {
         state: { restaurant: randomRestaurant, restaurants: restaurants },
       });
     }
@@ -44,17 +57,19 @@ function RestaurantResults() {
 
   const handleAddToFavorites = async () => {
     if (!selectedList) {
-      alert('Please select a favorite list.');
+      alert("Please select a favorite list.");
       return;
     }
 
-    const selectedRestaurantsArray = restaurants.filter((r) => selectedRestaurants.has(r.place_id));
+    const selectedRestaurantsArray = restaurants.filter((r) =>
+      selectedRestaurants.has(r.place_id)
+    );
     for (const restaurant of selectedRestaurantsArray) {
       try {
-        await fetch('http://localhost:8080/api/favorite-restaurants', {
-          method: 'POST',
+        await fetch("http://localhost:8080/api/favorite-restaurants", {
+          method: "POST",
           headers: {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
           },
           body: JSON.stringify({
             name: restaurant.name,
@@ -65,10 +80,10 @@ function RestaurantResults() {
           }),
         });
       } catch (error) {
-        console.error('Error adding to favorites:', error);
+        console.error("Error adding to favorites:", error);
       }
     }
-    alert('Selected restaurants added to favorites!');
+    alert("Selected restaurants added to favorites!");
   };
 
   return (
@@ -76,20 +91,33 @@ function RestaurantResults() {
       <Typography variant="h4" gutterBottom>
         Restaurant Results:
       </Typography>
-      <div style={{ display: 'flex', gap: '10px', marginBottom: '10px' }}>
-        <Button variant="contained" onClick={handleRandomRestaurant} style={{ backgroundColor: getRandomColor() }}>
+      <div style={{ display: "flex", gap: "10px", marginBottom: "10px" }}>
+        <Button
+          variant="contained"
+          onClick={handleRandomRestaurant}
+          style={{ backgroundColor: getRandomColor() }}
+        >
           Random Restaurant
         </Button>
         <FormControl style={{ minWidth: 200 }}>
           <InputLabel>Favorite List</InputLabel>
-          <Select value={selectedList} onChange={(e) => setSelectedList(e.target.value)}>
+          <Select
+            value={selectedList}
+            onChange={(e) => setSelectedList(e.target.value)}
+          >
             <MenuItem value="">Create a new Favorite List</MenuItem>
             {favoriteLists.map((list) => (
-              <MenuItem key={list.id} value={list.id}>{list.name}</MenuItem>
+              <MenuItem key={list.id} value={list.id}>
+                {list.name}
+              </MenuItem>
             ))}
           </Select>
         </FormControl>
-        <Button variant="contained" color="secondary" onClick={handleAddToFavorites}>
+        <Button
+          variant="contained"
+          color="secondary"
+          onClick={handleAddToFavorites}
+        >
           Add to Favorites
         </Button>
       </div>
@@ -99,14 +127,23 @@ function RestaurantResults() {
             <Card style={{ backgroundColor: getRandomColor() }}>
               <CardContent>
                 <Typography variant="h6">{restaurant.name}</Typography>
-                <Typography variant="body2" color="text.secondary">{restaurant.formatted_address}</Typography>
+                <Typography variant="body2" color="text.secondary">
+                  {restaurant.formatted_address}
+                </Typography>
                 {restaurant.rating && (
                   <Typography variant="body2" color="text.secondary">
                     Rating: {restaurant.rating}
                   </Typography>
                 )}
-                <IconButton onClick={() => toggleFavorite(restaurant.place_id)} color="error">
-                  {selectedRestaurants.has(restaurant.place_id) ? <FavoriteIcon /> : <FavoriteBorderIcon />}
+                <IconButton
+                  onClick={() => toggleFavorite(restaurant.place_id)}
+                  color="error"
+                >
+                  {selectedRestaurants.has(restaurant.place_id) ? (
+                    <FavoriteIcon />
+                  ) : (
+                    <FavoriteBorderIcon />
+                  )}
                 </IconButton>
               </CardContent>
             </Card>
@@ -199,9 +236,9 @@ export default RestaurantResults;
 //                     Rating: {restaurant.rating}
 //                   </Typography>
 //                 )}
-//                 <IconButton 
-//                   onClick={() => addToFavorites(restaurant)} 
-//                   color="error" 
+//                 <IconButton
+//                   onClick={() => addToFavorites(restaurant)}
+//                   color="error"
 //                   sx={{ marginLeft: '10px' }}
 //                 >
 //                   <FavoriteIcon />
@@ -216,7 +253,6 @@ export default RestaurantResults;
 // }
 
 // export default RestaurantResults;
-
 
 // import React from 'react';
 // import { useLocation, useNavigate } from 'react-router-dom';
