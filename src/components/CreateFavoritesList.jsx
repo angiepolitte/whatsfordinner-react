@@ -9,11 +9,14 @@ const CreateFavoriteList = ({ userId, onListCreated }) => {
     if (!listName.trim()) return;
 
     try {
-      const response = await fetch("http://localhost:8080/api/favorite-lists/create", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name: listName, userId }),
-      });
+      const response = await fetch(
+        "http://localhost:8080/api/favorite-lists/create",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ name: listName, user: { id: userId } }),
+        }
+      );
 
       if (!response.ok) {
         throw new Error("Failed to create list. Please try again.");

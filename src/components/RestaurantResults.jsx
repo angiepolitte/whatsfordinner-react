@@ -15,6 +15,7 @@ import {
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import { getRandomColor } from "./colors";
+import CreateFavoriteList from "./CreateFavoritesList";
 
 function RestaurantResults() {
   const location = useLocation();
@@ -106,6 +107,7 @@ function RestaurantResults() {
             onChange={(e) => setSelectedList(e.target.value)}
           >
             <MenuItem value="">Create a new Favorite List</MenuItem>
+
             {favoriteLists.map((list) => (
               <MenuItem key={list.id} value={list.id}>
                 {list.name}
