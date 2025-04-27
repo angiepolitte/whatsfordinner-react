@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useUser } from "../context/UserContext";
 
 function LoginPage({ onLogin }) {
+  const { login } = useUser();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -26,7 +28,7 @@ function LoginPage({ onLogin }) {
       const data = await response.json();
 
       if (response.ok && data.status === "ok") {
-        onLogin(); // lift state
+        login(data.user); // lift state
         navigate("/restaurant-search");
       } else {
         setError(data.error || "Login failed");

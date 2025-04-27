@@ -2,8 +2,17 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Card, CardContent, Typography, Grid, Button } from "@mui/material";
 import CreateFavoriteList from "./CreateFavoritesList";
+import { useUser } from "../context/UserContext";
 
 function Favorites({ userId }) {
+  const { currentUser } = useUser();
+
+  useEffect(() => {
+    if (currentUser) {
+      console.log("User is logged in:", currentUser.username);
+    }
+  }, [currentUser]);
+
   const [favoriteLists, setFavoriteLists] = useState([]);
   const navigate = useNavigate();
 

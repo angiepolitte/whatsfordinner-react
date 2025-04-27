@@ -2,8 +2,16 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { Button, Container, Typography, Box } from "@mui/material";
+import { useUser } from "../context/UserContext";
 
 function StarterPage() {
+  const { currentUser } = useUser();
+
+  useEffect(() => {
+    if (currentUser) {
+      console.log("User is logged in:", currentUser.username);
+    }
+  }, [currentUser]);
   const navigate = useNavigate();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [username, setUsername] = useState("");

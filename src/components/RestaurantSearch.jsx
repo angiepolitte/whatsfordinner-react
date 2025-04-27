@@ -1,10 +1,18 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { TextField, Button, Typography, Container, Box } from '@mui/material';
-import { Alert } from '@mui/material'; // Import Alert
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { TextField, Button, Typography, Container, Box } from "@mui/material";
+import { Alert } from "@mui/material"; // Import Alert
+import { useUser } from "../context/UserContext";
 
 function RestaurantSearch() {
-  const [zipCode, setZipCode] = useState('');
+  const { currentUser } = useUser();
+
+  useEffect(() => {
+    if (currentUser) {
+      console.log("User is logged in:", currentUser.username);
+    }
+  }, [currentUser]);
+  const [zipCode, setZipCode] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
@@ -21,30 +29,34 @@ function RestaurantSearch() {
     setShowAlert(false); // Hide alert if zipCode is valid
 
     try {
-      const url = `http://localhost:8080/api/restaurants?query=${encodeURIComponent(zipCode)}`;
+      const url = `http://localhost:8080/api/restaurants?query=${encodeURIComponent(
+        zipCode
+      )}`;
       const response = await fetch(url);
       const data = await response.json();
 
-      if (data.status === 'OK') {
-        navigate('/restaurant-results', { state: { restaurants: data.results } });
+      if (data.status === "OK") {
+        navigate("/restaurant-results", {
+          state: { restaurants: data.results },
+        });
       } else {
         setError(data.status);
       }
     } catch (err) {
-      setError(err.message || 'An error occurred.');
+      setError(err.message || "An error occurred.");
     } finally {
       setLoading(false);
     }
   };
 
   const handleKeyDown = (event) => {
-    if (event.key === 'Enter') {
+    if (event.key === "Enter") {
       handleSearch();
     }
   };
 
   return (
-    <Container maxWidth="sm" style={{ marginTop: '50px' }}>
+    <Container maxWidth="sm" style={{ marginTop: "50px" }}>
       <Box
         display="flex"
         flexDirection="column"
@@ -56,12 +68,12 @@ function RestaurantSearch() {
         borderRadius="8px"
         boxShadow="0 4px 8px rgba(0, 0, 0, 0.1)"
       >
-        <Typography variant="h4" gutterBottom style={{ color: '#e9ebf8' }}>
+        <Typography variant="h4" gutterBottom style={{ color: "#e9ebf8" }}>
           What's For Dinner?!
         </Typography>
 
         {showAlert && (
-          <Alert severity="warning" style={{ marginBottom: '10px' }}>
+          <Alert severity="warning" style={{ marginBottom: "10px" }}>
             Please enter a city or zip code.
           </Alert>
         )}
@@ -73,14 +85,14 @@ function RestaurantSearch() {
           onChange={(e) => setZipCode(e.target.value)}
           onKeyDown={handleKeyDown}
           style={{
-            padding: '10px',
-            margin: '8px 0',
-            border: 'none',
-            borderRadius: '4px',
-            backgroundColor: '#FFFFFF',
-            color: '#8d818c',
-            width: '100%',
-            boxSizing: 'border-box',
+            padding: "10px",
+            margin: "8px 0",
+            border: "none",
+            borderRadius: "4px",
+            backgroundColor: "#FFFFFF",
+            color: "#8d818c",
+            width: "100%",
+            boxSizing: "border-box",
           }}
         />
 
@@ -88,13 +100,21 @@ function RestaurantSearch() {
           variant="contained"
           onClick={handleSearch}
           disabled={loading}
-          style={{ marginTop: '20px', backgroundColor: '#e9ebf8', color: 'black' }}
+          style={{
+            marginTop: "20px",
+            backgroundColor: "#e9ebf8",
+            color: "black",
+          }}
         >
-          {loading ? 'Searching...' : 'Search Restaurants'}
+          {loading ? "Searching..." : "Search Restaurants"}
         </Button>
 
         {error && (
-          <Typography variant="body2" color="error" style={{ marginTop: '10px' }}>
+          <Typography
+            variant="body2"
+            color="error"
+            style={{ marginTop: "10px" }}
+          >
             Error: {error}
           </Typography>
         )}

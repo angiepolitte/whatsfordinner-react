@@ -1,6 +1,15 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useUser } from "../context/UserContext";
 
 const CreateFavoriteList = ({ userId, onListCreated }) => {
+  const { currentUser } = useUser();
+
+  useEffect(() => {
+    if (currentUser) {
+      console.log("User is logged in:", currentUser.username);
+    }
+  }, [currentUser]);
+
   const [listName, setListName] = useState("");
   const [error, setError] = useState(null);
 

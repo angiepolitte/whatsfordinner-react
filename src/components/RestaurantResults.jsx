@@ -16,8 +16,17 @@ import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import { getRandomColor } from "./colors";
 import CreateFavoriteList from "./CreateFavoritesList";
+import { useUser } from "../context/UserContext";
 
 function RestaurantResults() {
+  const { currentUser } = useUser();
+
+  useEffect(() => {
+    if (currentUser) {
+      console.log("User is logged in:", currentUser.username);
+    }
+  }, [currentUser]);
+
   const location = useLocation();
   const restaurants = location.state?.restaurants || [];
   const navigate = useNavigate();

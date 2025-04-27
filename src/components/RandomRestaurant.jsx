@@ -1,9 +1,25 @@
-import React, { useState, useEffect } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { Card, CardContent, Typography, Container, Button, Box } from '@mui/material';
-import { getRandomColor } from './colors';
+import React, { useState, useEffect } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import {
+  Card,
+  CardContent,
+  Typography,
+  Container,
+  Button,
+  Box,
+} from "@mui/material";
+import { getRandomColor } from "./colors";
+import { useUser } from "../context/UserContext";
 
 function RandomRestaurant() {
+  const { currentUser } = useUser();
+
+  useEffect(() => {
+    if (currentUser) {
+      console.log("User is logged in:", currentUser.username);
+    }
+  }, [currentUser]);
+
   const location = useLocation();
   const navigate = useNavigate();
   const restaurants = location.state?.restaurants || [];
@@ -25,7 +41,7 @@ function RandomRestaurant() {
   };
 
   const handleStartOver = () => {
-    navigate('/restaurant-search'); // Navigate back to the first page (RestaurantSearch)
+    navigate("/restaurant-search"); // Navigate back to the first page (RestaurantSearch)
   };
 
   if (!randomRestaurant) {
@@ -34,7 +50,7 @@ function RandomRestaurant() {
 
   return (
     <Container maxWidth="md">
-      <Card style={{ marginTop: '20px', backgroundColor: getRandomColor() }}>
+      <Card style={{ marginTop: "20px", backgroundColor: getRandomColor() }}>
         <CardContent>
           <Typography variant="h4" component="div" gutterBottom>
             {randomRestaurant.name}
@@ -51,15 +67,15 @@ function RandomRestaurant() {
       </Card>
       <Box display="flex" justifyContent="center" marginTop="20px">
         <Button
-          color ="#808000"
+          color="#808000"
           variant="contained"
           onClick={handleChooseAgain}
-          style={{ marginRight: '10px', backgroundColor: getRandomColor() }}
+          style={{ marginRight: "10px", backgroundColor: getRandomColor() }}
         >
           Choose Again
         </Button>
         <Button
-          color ="#808000"
+          color="#808000"
           variant="contained"
           onClick={handleStartOver}
           style={{ backgroundColor: getRandomColor() }}

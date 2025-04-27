@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useUser } from "../context/UserContext";
 
 function RegistrationPage({ onLogin }) {
+  const { login } = useUser();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [verifyPassword, setVerifyPassword] = useState("");
@@ -58,7 +60,7 @@ function RegistrationPage({ onLogin }) {
 
       if (response.ok) {
         setSuccess("Registration successful!");
-        onLogin(); // Trigger login state change
+        login({ username }); // Trigger login state change
         navigate("/success");
       } else {
         const errorMessage = await response.text();
