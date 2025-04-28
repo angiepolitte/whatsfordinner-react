@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { useUser } from "../context/UserContext";
 
 function Register({ onLogin }) {
   const [username, setUsername] = useState("");
@@ -9,6 +10,7 @@ function Register({ onLogin }) {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const navigate = useNavigate();
+  const { login } = useUser();
 
   const passwordPattern =
     /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
@@ -38,17 +40,16 @@ function Register({ onLogin }) {
     try {
       const response = await axios.post(
         "http://localhost:8080/api/auth/register",
-        {
-          username,
-          password,
-        },
-        {
-          withCredentials: true,
-        }
+        { username, password },
+        { withCredentials: true }
       );
 
       if (response.data.status === "ok") {
         setSuccess("Registration successful!");
+
+        // Set the current user in the context after registration, assuming response.data contains userId
+        login({ id: response.data.userId, username: username });
+
         onLogin(); // lift auth state
         navigate("/restaurant-search"); // <<< or wherever you want after login
       } else {
@@ -84,7 +85,6 @@ function Register({ onLogin }) {
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            required
           />
         </div>
         <div>
