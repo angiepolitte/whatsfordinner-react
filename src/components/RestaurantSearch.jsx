@@ -3,8 +3,13 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { TextField, Button, Typography, Container, Box } from "@mui/material";
 import { Alert } from "@mui/material"; // Import Alert
+import { useUser } from "../context/UserContext";
 
 function RestaurantSearch() {
+  const { currentUser } = useUser();
+  console.log("currentUser:", currentUser);
+  const userId = currentUser?.id;
+
   const [zipCode, setZipCode] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);

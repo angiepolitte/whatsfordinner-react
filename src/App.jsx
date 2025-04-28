@@ -11,6 +11,7 @@ import Favorites from "./components/Favorites";
 import CreateFavoriteList from "./components/CreateFavoritesList";
 import Login from "./components/Login";
 import Register from "./components/Register";
+import { UserProvider } from "./context/UserContext";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -39,26 +40,28 @@ function App() {
   };
 
   return (
-    <Router>
-      <NavBar isLoggedIn={isLoggedIn} onLogout={handleLogout} />
-      <div style={{ paddingTop: "64px" }}>
-        {" "}
-        {/* Adjust padding to avoid overlap */}
-        <Routes>
-          <Route path="/" element={<StarterPage />} />
-          <Route path="/login" element={<Login onLogin={handleLogin} />} />
-          <Route
-            path="/registration"
-            element={<Register onLogin={handleLogin} />}
-          />
-          <Route path="/success" element={<SuccessPage />} />
-          <Route path="/restaurant-search" element={<RestaurantSearch />} />
-          <Route path="/restaurant-results" element={<RestaurantResults />} />
-          <Route path="/random-restaurant" element={<RandomRestaurant />} />
-          <Route path="/favorites" element={<Favorites />} />
-        </Routes>
-      </div>
-    </Router>
+    <UserProvider>
+      <Router>
+        <NavBar isLoggedIn={isLoggedIn} onLogout={handleLogout} />
+        <div style={{ paddingTop: "64px" }}>
+          {" "}
+          {/* Adjust padding to avoid overlap */}
+          <Routes>
+            <Route path="/" element={<StarterPage />} />
+            <Route path="/login" element={<Login onLogin={handleLogin} />} />
+            <Route
+              path="/registration"
+              element={<Register onLogin={handleLogin} />}
+            />
+            <Route path="/success" element={<SuccessPage />} />
+            <Route path="/restaurant-search" element={<RestaurantSearch />} />
+            <Route path="/restaurant-results" element={<RestaurantResults />} />
+            <Route path="/random-restaurant" element={<RandomRestaurant />} />
+            <Route path="/favorites" element={<Favorites />} />
+          </Routes>
+        </div>
+      </Router>
+    </UserProvider>
   );
 }
 
