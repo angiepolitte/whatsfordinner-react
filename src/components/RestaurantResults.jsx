@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useInRouterContext, useLocation, useNavigate } from "react-router-dom";
 import {
   Card,
@@ -16,10 +16,10 @@ import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import { getRandomColor } from "./colors";
 import CreateFavoriteList from "./CreateFavoritesList";
-import { useUser } from "../context/UserContext";
+import { AuthContext } from "../context/AuthContext";
 
 function RestaurantResults() {
-  const { currentUser } = useUser() || {};
+  const { currentUser } = useContext(AuthContext);
   const userId = currentUser?.id;
 
   const location = useLocation();

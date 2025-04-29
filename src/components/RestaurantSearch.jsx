@@ -1,13 +1,13 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { TextField, Button, Typography, Container, Box } from "@mui/material";
 import { Alert } from "@mui/material"; // Import Alert
-import { useUser } from "../context/UserContext";
+import { AuthContext } from "../context/AuthContext";
 
 function RestaurantSearch() {
-  const { currentUser } = useUser();
-  console.log("currentUser:", currentUser);
+  const { currentUser } = useContext(AuthContext);
+  // console.log("currentUser:", currentUser);
   const userId = currentUser?.id;
 
   const [zipCode, setZipCode] = useState("");

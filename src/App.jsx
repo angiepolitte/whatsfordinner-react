@@ -11,7 +11,7 @@ import Favorites from "./components/Favorites";
 import CreateFavoriteList from "./components/CreateFavoritesList";
 import Login from "./components/Login";
 import Register from "./components/Register";
-import { UserProvider } from "./context/UserContext";
+import { AuthProvider } from "./context/AuthContext";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -40,7 +40,7 @@ function App() {
   };
 
   return (
-    <UserProvider>
+    <AuthProvider>
       <Router>
         <NavBar isLoggedIn={isLoggedIn} onLogout={handleLogout} />
         <div style={{ paddingTop: "64px" }}>
@@ -61,7 +61,7 @@ function App() {
           </Routes>
         </div>
       </Router>
-    </UserProvider>
+    </AuthProvider>
   );
 }
 

@@ -1,16 +1,16 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { useUser } from "../context/UserContext";
+import { AuthContext } from "../context/AuthContext";
 
 function Register({ onLogin }) {
+  const { setCurrentUser } = useContext(AuthContext); // Get setCurrentUser from AuthContext
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [verifyPassword, setVerifyPassword] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const navigate = useNavigate();
-  const { login } = useUser();
 
   const passwordPattern =
     /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
@@ -45,13 +45,18 @@ function Register({ onLogin }) {
       );
 
       if (response.data.status === "ok") {
+        // Save userId to localStorage
+        localStorage.setItem("userId", response.data.userId);
         setSuccess("Registration successful!");
 
-        // Set the current user in the context after registration, assuming response.data contains userId
-        login({ id: response.data.userId, username: username });
+        // Set the current user in the context after registration
+        setCurrentUser({
+          id: response.data.userId,
+          username: username,
+        });
 
         onLogin(); // lift auth state
-        navigate("/restaurant-search"); // <<< or wherever you want after login
+        navigate("/restaurant-search"); // Navigate to desired page
       } else {
         setError("Registration failed. Please try again.");
       }

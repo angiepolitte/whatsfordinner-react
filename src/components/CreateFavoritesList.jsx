@@ -1,11 +1,11 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, UserContext } from "react";
 import axios from "axios";
-import { useUser } from "../context/UserContext";
+import { AuthContext } from "../context/AuthContext";
 import { FormControl, Select, MenuItem } from "@mui/material";
 
 const CreateFavoriteList = ({ onListCreated, onListSelected }) => {
-  const { currentUser } = useUser() || {};
-  console.log("currentUser:", currentUser);
+  const { currentUser } = useContext(AuthContext);
+  // console.log("currentUser:", currentUser);
   const userId = currentUser?.id;
 
   const [listName, setListName] = useState("");
